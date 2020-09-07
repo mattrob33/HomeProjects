@@ -56,8 +56,8 @@ open class ProjectRepoTest {
         fakeProject.title = newTitle
         projectRepo.updateProject(fakeProject)
 
-        val project = projectRepo.getProject(id)
-        assertEquals(newTitle, project!!.title)
+        val project = projectRepo.getProject(id)!!
+        assertEquals(newTitle, project.title)
     }
 
     @Test
