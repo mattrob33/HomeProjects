@@ -1,5 +1,7 @@
 package com.homeprojects.data.repo
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.homeprojects.data.db.ProjectDao
 import com.homeprojects.data.mappers.ProjectMapper
 import com.homeprojects.model.Project
@@ -39,6 +41,16 @@ class ProjectRepo @Inject constructor(val projectDao: ProjectDao) {
     suspend fun getAllProjects(): List<Project> {
         return projectDao.getAllProjects().map {
             ProjectMapper.fromEntity(it)
+        }
+    }
+
+    fun getProjectsFlow(): LiveData<List<Project>> {
+        val projectsLiveData = projectDao.getProjectsFlow()
+
+        return Transformations.map(projectsLiveData) { entityList ->
+            entityList.map { entity ->
+                ProjectMapper.fromEntity(entity)
+            }
         }
     }
 }
