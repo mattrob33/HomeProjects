@@ -31,10 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.ui.tooling.preview.Preview
-import com.homeprojects.model.Cost
-import com.homeprojects.model.Priority
-import com.homeprojects.model.Project
-import com.homeprojects.model.ProjectSize
+import com.homeprojects.data.cache.Locations
+import com.homeprojects.model.*
 import com.homeprojects.presentation.ProjectListViewModel
 import com.homeprojects.ui.HomeProjectsTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     fun NewProjectDialogContent(
             titleState: MutableState<TextFieldValue>,
             descState: MutableState<TextFieldValue>,
+            locationState: MutableState<Location>,
             priorityState: MutableState<Float>,
             sizeState: MutableState<Float>,
             costState: MutableState<Float>
@@ -84,6 +83,42 @@ class MainActivity : AppCompatActivity() {
             Spacer(modifier = Modifier.padding(8.dp))
 
             Row(verticalGravity = Alignment.CenterVertically) {
+                Text("Location", color = MaterialTheme.colors.primary)
+
+                Spacer(modifier = Modifier.padding(8.dp))
+
+                val locationExpanded = remember { mutableStateOf(false) }
+
+                DropdownMenu(
+                        toggle = {
+                            Text(
+                                text = locationState.value.name,
+                                modifier = Modifier.padding(8.dp, 4.dp).clickable(
+                                    onClick = {
+                                        locationExpanded.value = true
+                                    }
+                                )
+                            )
+                        },
+                        expanded = locationExpanded.value,
+                        onDismissRequest = { locationExpanded.value = false }
+                ) {
+                    Locations.list().forEach { location ->
+                        DropdownMenuItem(
+                                onClick = {
+                                    locationExpanded.value = false
+                                    locationState.value = location
+                                }
+                        ) {
+                            Text(location.name)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            Row(verticalGravity = Alignment.CenterVertically) {
                 Text("Priority", color = MaterialTheme.colors.primary)
 
                 Spacer(modifier = Modifier.padding(8.dp))
@@ -97,8 +132,6 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-            Spacer(modifier = Modifier.padding(4.dp))
-
             Row(verticalGravity = Alignment.CenterVertically) {
                 Text("Size", color = MaterialTheme.colors.primary)
 
@@ -111,8 +144,6 @@ class MainActivity : AppCompatActivity() {
                         steps = 2
                 )
             }
-
-            Spacer(modifier = Modifier.padding(4.dp))
 
             Row(verticalGravity = Alignment.CenterVertically) {
                 Text("Cost", color = MaterialTheme.colors.primary)
@@ -133,6 +164,7 @@ class MainActivity : AppCompatActivity() {
     fun NewProjectDialog() {
         val titleState = remember { mutableStateOf(TextFieldValue("")) }
         val descState = remember { mutableStateOf(TextFieldValue("")) }
+        val locationState = remember { mutableStateOf(Location.INTERIOR) }
         val priorityState = remember { mutableStateOf(0f) }
         val sizeState = remember { mutableStateOf(0f) }
         val costState = remember { mutableStateOf(0f) }
@@ -144,6 +176,7 @@ class MainActivity : AppCompatActivity() {
                     NewProjectDialogContent(
                             titleState = titleState,
                             descState = descState,
+                            locationState = locationState,
                             priorityState = priorityState,
                             sizeState = sizeState,
                             costState = costState
@@ -156,6 +189,7 @@ class MainActivity : AppCompatActivity() {
                                         Project(
                                                 title = titleState.value.text,
                                                 description = descState.value.text,
+                                                location = locationState.value,
                                                 priority = Priority.values()[priorityState.value.toInt()],
                                                 size = ProjectSize.values()[sizeState.value.toInt()],
                                                 cost = Cost.values()[costState.value.toInt()]
@@ -208,51 +242,66 @@ class MainActivity : AppCompatActivity() {
                     color = bgColor,
                     modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp)
+                Row(
+                        verticalGravity = Alignment.CenterVertically
                 ) {
                     Text(
-                            text = project.title,
-                            color = MaterialTheme.colors.onSurface,
+                            text = "[${project.location.name}]",
+                            color = MaterialTheme.colors.primary,
                             style = TextStyle(
                                     fontFamily = FontFamily.Default,
                                     fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp
-                            )
+                                    fontSize = 14.sp
+                            ),
+                            modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                     )
-                    if (project.description.isNotEmpty()) {
+
+                    Column(
+                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                    ) {
                         Text(
-                                text = project.description,
-                                color = Color(0xFFAAAAAA),
+                                text = project.title,
+                                color = MaterialTheme.colors.onSurface,
                                 style = TextStyle(
                                         fontFamily = FontFamily.Default,
                                         fontWeight = FontWeight.Normal,
-                                        fontSize = 14.sp
-                                ),
-                                modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+                                        fontSize = 16.sp
+                                )
                         )
-                    }
-                    Row(
-                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
-                    ) {
-                        Text(
-                                text = priorityText,
-                                color = MaterialTheme.colors.onSurface
-                        )
+                        if (project.description.isNotEmpty()) {
+                            Text(
+                                    text = project.description,
+                                    color = Color(0xFFAAAAAA),
+                                    style = TextStyle(
+                                            fontFamily = FontFamily.Default,
+                                            fontWeight = FontWeight.Normal,
+                                            fontSize = 14.sp
+                                    ),
+                                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+                            )
+                        }
+                        Row(
+                                modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                        ) {
+                            Text(
+                                    text = priorityText,
+                                    color = MaterialTheme.colors.onSurface
+                            )
 
-                        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                            Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
-                        Text(
-                                text = sizeText,
-                                color = MaterialTheme.colors.onSurface
-                        )
+                            Text(
+                                    text = sizeText,
+                                    color = MaterialTheme.colors.onSurface
+                            )
 
-                        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                            Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
-                        Text(
-                                text = costText,
-                                color = MaterialTheme.colors.onSurface
-                        )
+                            Text(
+                                    text = costText,
+                                    color = MaterialTheme.colors.onSurface
+                            )
+                        }
                     }
                 }
             }

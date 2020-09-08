@@ -24,4 +24,6 @@ object Locations {
     }
 
     fun size() = locations.size
+
+    fun list(): List<Location> = locations
 }
