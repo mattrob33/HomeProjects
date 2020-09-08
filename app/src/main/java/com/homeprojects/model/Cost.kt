@@ -4,6 +4,5 @@ enum class Cost {
     FREE,
     ONE,
     TWO,
-    THREE,
-    FOUR
+    THREE
 }

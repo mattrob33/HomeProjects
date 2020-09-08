@@ -61,8 +61,11 @@ dependencies {
     implementation "androidx.ui:ui-tooling:$compose_version"
 
     //Dependency Injection
-    implementation "com.google.dagger:hilt-android:2.28-alpha"
-    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    implementation "com.google.dagger:hilt-android:2.28.3-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28.3-alpha"
+
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
+
 
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha07'
