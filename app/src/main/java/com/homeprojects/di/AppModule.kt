@@ -1,28 +1,42 @@
 package com.homeprojects.di
 
+import com.homeprojects.data.db.LocationDao
 import com.homeprojects.data.db.ProjectDao
 import com.homeprojects.data.db.ProjectsDatabase
+import com.homeprojects.data.repo.LocationRepo
 import com.homeprojects.data.repo.ProjectRepo
 import com.homeprojects.presentation.ProjectListViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ApplicationComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(ApplicationComponent::class)
 object AppModule {
 
+    @Singleton
     @Provides
     fun provideProjectDatabase() = ProjectsDatabase.getInstance()
 
+    @Singleton
     @Provides
     fun provideProjectDao(db: ProjectsDatabase) = db.projectDao()
 
+    @Singleton
     @Provides
     fun provideProjectRepo(projectDao: ProjectDao) = ProjectRepo(projectDao)
 
+    @Singleton
     @Provides
-    fun provideProjectListViewModel(projectsRepo: ProjectRepo) = ProjectListViewModel(projectsRepo)
+    fun provideLocationDao(db: ProjectsDatabase) = db.locationDao()
+
+    @Singleton
+    @Provides
+    fun provideLocationRepo(locationDao: LocationDao) = LocationRepo(locationDao)
+
+    @Provides
+    fun provideProjectListViewModel(projectsRepo: ProjectRepo, locationRepo: LocationRepo) = ProjectListViewModel(projectsRepo, locationRepo)
 
 }

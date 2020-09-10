@@ -1,5 +1,6 @@
 package com.homeprojects.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.homeprojects.data.db.ProjectsDatabase.Companion.LOCATIONS_TABLE
 import com.homeprojects.data.models.LocationEntity
@@ -20,4 +21,7 @@ interface LocationDao {
 
     @Query("SELECT * FROM $LOCATIONS_TABLE")
     suspend fun getAllLocations(): List<LocationEntity>
+
+    @Query("SELECT * FROM $LOCATIONS_TABLE")
+    fun getLocationsFlow(): LiveData<List<LocationEntity>>
 }

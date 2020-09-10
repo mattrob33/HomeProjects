@@ -1,5 +1,7 @@
 package com.homeprojects.data.repo
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.homeprojects.data.db.LocationDao
 import com.homeprojects.data.mappers.LocationMapper
 import com.homeprojects.data.mappers.ProjectMapper
@@ -40,6 +42,15 @@ class LocationRepo @Inject constructor(val locationDao: LocationDao) {
     suspend fun getAllLocations(): List<Location> {
         return locationDao.getAllLocations().map {
             LocationMapper.fromEntity(it)
+        }
+    }
+
+    fun getLocations(): LiveData<List<Location>> {
+        val locationsLiveData = locationDao.getLocationsFlow()
+        return Transformations.map(locationsLiveData) { entityList ->
+            entityList.map { entity ->
+                LocationMapper.fromEntity(entity)
+            }
         }
     }
 }

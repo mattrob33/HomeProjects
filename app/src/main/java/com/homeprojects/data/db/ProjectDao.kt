@@ -7,7 +7,7 @@ import com.homeprojects.data.models.ProjectEntity
 
 @Dao
 interface ProjectDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(project: ProjectEntity)
 
     @Update
