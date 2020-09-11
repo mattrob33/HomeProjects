@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Home Projects</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Home Projects</string>
+    <string name="nav_header_subtitle">Let\'s get to work</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_projects">Projects</string>
+    <string name="menu_locations">Locations</string>
+    <string name="menu_tags">Tags</string>
 </resources>
