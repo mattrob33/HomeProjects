@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/nav_projects"
-        android:name="com.homeprojects.presentation.ProjectListFragment"
+        android:name="com.homeprojects.presentation.projects.ProjectsFragment"
         android:label="@string/menu_projects" />
 
     <fragment
         android:id="@+id/nav_locations"
-        android:name="com.homeprojects.ui.locations.LocationsFragment"
+        android:name="com.homeprojects.presentation.locations.LocationsFragment"
         android:label="@string/menu_locations"
         tools:layout="@layout/fragment_locations" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.homeprojects.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_tags"
+        android:name="com.homeprojects.presentation.tags.TagsFragment"
         android:label="@string/menu_tags"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_tags" />
 </navigation>

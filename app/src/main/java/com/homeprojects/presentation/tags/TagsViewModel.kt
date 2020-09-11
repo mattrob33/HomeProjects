@@ -1,13 +1,13 @@
-package com.homeprojects.ui.locations
+package com.homeprojects.presentation.tags
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class LocationsViewModel : ViewModel() {
+class TagsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+        value = "Tags"
     }
     val text: LiveData<String> = _text
 }

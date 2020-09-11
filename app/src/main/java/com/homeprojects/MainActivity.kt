@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.setBackgroundColor(resources.getColor(R.color.darkSurface, theme))
         setSupportActionBar(toolbar)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_projects,
                 R.id.nav_locations,
-                R.id.nav_slideshow
+                R.id.nav_tags
             ),
             drawerLayout
         )

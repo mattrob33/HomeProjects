@@ -1,4 +1,4 @@
-package com.homeprojects.presentation
+package com.homeprojects.presentation.projects
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -11,7 +11,7 @@ import com.homeprojects.model.Project
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProjectListViewModel @ViewModelInject constructor(
+class ProjectsViewModel @ViewModelInject constructor(
     val projectsRepo: ProjectRepo,
     val locationsRepo: LocationRepo
 ): ViewModel() {

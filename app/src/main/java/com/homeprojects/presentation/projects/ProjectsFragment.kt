@@ -1,4 +1,4 @@
-package com.homeprojects.presentation
+package com.homeprojects.presentation.projects
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,13 +32,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProjectListFragment : Fragment() {
+class ProjectsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ProjectListFragment()
-    }
-
-    @Inject lateinit var viewModel: ProjectListViewModel
+    @Inject lateinit var viewModel: ProjectsViewModel
 
     private var showProjectDialog by mutableStateOf(false)
     private var showLocationDialog by mutableStateOf(false)
@@ -46,7 +42,7 @@ class ProjectListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                ProjectsListScreen(viewModel.projects)
+                ProjectsScreen(viewModel.projects)
             }
         }
     }
@@ -139,7 +135,7 @@ class ProjectListFragment : Fragment() {
                 ) {
                     val locations = viewModel.locations.observeAsState()
 
-                    locations.value?.forEach { location ->
+                    locations.value?.sortedBy { it.name }?.forEach { location ->
                         DropdownMenuItem(
                                 onClick = {
                                     locationExpanded.value = false
@@ -256,8 +252,15 @@ class ProjectListFragment : Fragment() {
 
     @Composable
     fun AddProjectButton(modifier: Modifier = Modifier) {
-        FloatingActionButton(modifier = modifier, onClick = { showNewProjectDialog() }) {
-            Icon(asset = Icons.Rounded.Add)
+        FloatingActionButton(
+            modifier = modifier,
+            onClick = { showNewProjectDialog() },
+            backgroundColor = MaterialTheme.colors.primary
+        ) {
+            Icon(
+                asset = Icons.Rounded.Add,
+                tint = MaterialTheme.colors.onSurface
+            )
         }
     }
 
@@ -310,7 +313,7 @@ class ProjectListFragment : Fragment() {
                             color = MaterialTheme.colors.onSurface,
                             style = TextStyle(
                                     fontFamily = FontFamily.Default,
-                                    fontWeight = FontWeight.Normal,
+                                    fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                             )
                     )
@@ -366,15 +369,20 @@ class ProjectListFragment : Fragment() {
 
     @Composable
     fun ListSectionHeader(text: String) {
-        Column(modifier = Modifier.padding(top = 24.dp)) {
-            Text(
+        Surface(
+            color = MaterialTheme.colors.surface,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(top = 24.dp)) {
+                Text(
                     text = text,
                     style = MaterialTheme.typography.h6,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.onSurface,
                     modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
-            )
-            Divider()
+                )
+                Divider()
+            }
         }
     }
 
@@ -405,7 +413,7 @@ class ProjectListFragment : Fragment() {
     }
 
     @Composable
-    fun ProjectsListScreen(projectList: LiveData<List<Project>>) {
+    fun ProjectsScreen(projectList: LiveData<List<Project>>) {
         HomeProjectsTheme {
             Stack(
                     modifier = Modifier.fillMaxSize()

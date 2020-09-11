@@ -5,7 +5,8 @@ import com.homeprojects.data.db.ProjectDao
 import com.homeprojects.data.db.ProjectsDatabase
 import com.homeprojects.data.repo.LocationRepo
 import com.homeprojects.data.repo.ProjectRepo
-import com.homeprojects.presentation.ProjectListViewModel
+import com.homeprojects.presentation.locations.LocationsViewModel
+import com.homeprojects.presentation.projects.ProjectsViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,6 +38,9 @@ object AppModule {
     fun provideLocationRepo(locationDao: LocationDao) = LocationRepo(locationDao)
 
     @Provides
-    fun provideProjectListViewModel(projectsRepo: ProjectRepo, locationRepo: LocationRepo) = ProjectListViewModel(projectsRepo, locationRepo)
+    fun provideProjectsViewModel(projectsRepo: ProjectRepo, locationRepo: LocationRepo) = ProjectsViewModel(projectsRepo, locationRepo)
+
+    @Provides
+    fun provideLocationsViewModel(projectsRepo: ProjectRepo, locationRepo: LocationRepo) = LocationsViewModel(projectsRepo, locationRepo)
 
 }
