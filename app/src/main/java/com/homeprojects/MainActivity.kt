@@ -297,7 +297,7 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxWidth().padding(16.dp)
                 ) {
                     Text(
-                        text = "${project.title} (${project.status.name})",
+                        text = project.title,
                         color = MaterialTheme.colors.onSurface,
                         style = TextStyle(
                             fontFamily = FontFamily.Default,
@@ -357,12 +357,18 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun ListSectionHeader(text: String, isFirst: Boolean = false) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.h6,
-            color = MaterialTheme.colors.onSurface,
-            modifier = if (isFirst) Modifier else Modifier.padding(top = 24.dp)
-        )
+        val topPadding = 24.dp
+
+        Column(modifier = Modifier.padding(top = topPadding)) {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.onSurface,
+                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+            )
+            Divider()
+        }
     }
 
     @Composable
@@ -374,10 +380,10 @@ class MainActivity : AppCompatActivity() {
         val completedProjects = projects.filter { project -> project.status == ProjectStatus.COMPLETED }
 
         ScrollableColumn {
-            ListSectionHeader(text = "Active", isFirst = true)
+            ListSectionHeader(text = "Current", isFirst = true)
             activeProjects.filter { project -> project.status == ProjectStatus.ACTIVE }.forEach { ProjectListItem(it) }
 
-            ListSectionHeader(text = "Inactive")
+            ListSectionHeader(text = "Future")
             inactiveProjects.filter { project -> project.status == ProjectStatus.INACTIVE }.forEach { ProjectListItem(it) }
 
             ListSectionHeader(text = "Completed")
