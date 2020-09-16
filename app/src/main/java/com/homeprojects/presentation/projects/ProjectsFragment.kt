@@ -25,9 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.ui.tooling.preview.Preview
 import com.homeprojects.model.*
 import com.homeprojects.ui.HomeProjectsTheme
+import com.homeprojects.ui.darkSurface
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -156,7 +158,7 @@ class ProjectsFragment : Fragment() {
                                     colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface)
                             )
                             Spacer(modifier = Modifier.padding(end = 8.dp))
-                            Text("New location")
+                            Text("New")
                         }
                     }
                 }
@@ -259,7 +261,7 @@ class ProjectsFragment : Fragment() {
         ) {
             Icon(
                 asset = Icons.Rounded.Add,
-                tint = MaterialTheme.colors.onSurface
+                tint = darkSurface
             )
         }
     }
@@ -286,15 +288,18 @@ class ProjectsFragment : Fragment() {
                         .clickable(
                                 onClick = {
 
-                                    viewModel.updateProject(
-                                            project.copy(
-                                                    status = when(project.status) {
-                                                        ProjectStatus.INACTIVE -> ProjectStatus.ACTIVE
-                                                        ProjectStatus.ACTIVE -> ProjectStatus.COMPLETED
-                                                        ProjectStatus.COMPLETED -> ProjectStatus.INACTIVE
-                                                    }
-                                            )
-                                    )
+//                                    viewModel.updateProject(
+//                                            project.copy(
+//                                                    status = when(project.status) {
+//                                                        ProjectStatus.INACTIVE -> ProjectStatus.ACTIVE
+//                                                        ProjectStatus.ACTIVE -> ProjectStatus.COMPLETED
+//                                                        ProjectStatus.COMPLETED -> ProjectStatus.INACTIVE
+//                                                    }
+//                                            )
+//                                    )
+
+                                    val direction = ProjectsFragmentDirections.editProject(project.id)
+                                    findNavController().navigate(direction)
                                 },
                                 onLongClick = {
                                     viewModel.deleteProject(project)

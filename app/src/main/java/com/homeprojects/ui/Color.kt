@@ -8,4 +8,6 @@ val purple700 = Color(0xFF3700B3)
 
 val teal200 = Color(0xFF03DAC5)
 
+val houseYellow = Color(0xFFEFE482)
+
 val darkSurface = Color(0xFF1C1C1C)

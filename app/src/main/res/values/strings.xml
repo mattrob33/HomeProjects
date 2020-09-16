@@ -11,4 +11,5 @@
     <string name="menu_projects">Projects</string>
     <string name="menu_locations">Locations</string>
     <string name="menu_tags">Tags</string>
+    <string name="menu_project">Edit Project</string>
 </resources>

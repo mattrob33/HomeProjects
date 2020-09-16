@@ -8,17 +8,33 @@
     <fragment
         android:id="@+id/nav_projects"
         android:name="com.homeprojects.presentation.projects.ProjectsFragment"
-        android:label="@string/menu_projects" />
+        android:label="@string/menu_projects" >
+        <action
+            android:id="@+id/edit_project"
+            app:destination="@id/nav_project" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_locations"
         android:name="com.homeprojects.presentation.locations.LocationsFragment"
-        android:label="@string/menu_locations"
-        tools:layout="@layout/fragment_locations" />
+        android:label="@string/menu_locations" />
 
     <fragment
         android:id="@+id/nav_tags"
         android:name="com.homeprojects.presentation.tags.TagsFragment"
         android:label="@string/menu_tags"
         tools:layout="@layout/fragment_tags" />
+
+    <fragment
+        android:id="@+id/nav_project"
+        android:name="com.homeprojects.presentation.project.ProjectFragment"
+        android:label="@string/menu_project">
+
+        <argument
+            android:name="projectId"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
+
 </navigation>

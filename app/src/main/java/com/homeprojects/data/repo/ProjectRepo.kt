@@ -44,13 +44,15 @@ class ProjectRepo @Inject constructor(val projectDao: ProjectDao) {
         }
     }
 
-    fun getProjects(): LiveData<List<Project>> {
-        val projectsLiveData = projectDao.getProjectsFlow()
+    fun getProjectLiveData(id: String): LiveData<Project> {
+        return Transformations.map(projectDao.getProjectLiveData(id)) { entity ->
+            ProjectMapper.fromEntity(entity)
+        }
+    }
 
-        return Transformations.map(projectsLiveData) { entityList ->
-            entityList.map { entity ->
-                ProjectMapper.fromEntity(entity)
-            }
+    fun getProjects(): LiveData<List<Project>> = Transformations.map(projectDao.getProjectsFlow()) { entityList ->
+        entityList.map { entity ->
+            ProjectMapper.fromEntity(entity)
         }
     }
 }
