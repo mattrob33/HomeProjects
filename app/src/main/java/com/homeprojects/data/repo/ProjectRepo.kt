@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.homeprojects.data.db.ProjectDao
 import com.homeprojects.data.mappers.ProjectMapper
+import com.homeprojects.model.Location
 import com.homeprojects.model.Project
 import javax.inject.Inject
 
@@ -56,6 +57,14 @@ class ProjectRepo @Inject constructor(val projectDao: ProjectDao) {
     fun getProjects(): LiveData<List<Project>> = Transformations.map(projectDao.getProjectsFlow()) { entityList ->
         entityList.map { entity ->
             ProjectMapper.fromEntity(entity)
+        }
+    }
+
+    fun getProjectsForLocation(location: Location): LiveData<List<Project>> = Transformations.map(projectDao.getProjectsFlow()) { entityList ->
+        entityList.map { entity ->
+            ProjectMapper.fromEntity(entity)
+        }.filter { project ->
+            project.location == location
         }
     }
 }

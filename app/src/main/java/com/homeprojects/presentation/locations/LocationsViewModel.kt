@@ -17,9 +17,32 @@ class LocationsViewModel @ViewModelInject constructor(
         val locationsRepo: LocationRepo
 ): ViewModel() {
 
+    val currentScreen = MutableLiveData(LocationScreen.LOCATIONS)
+
     val locations: LiveData<List<Location>> = locationsRepo.getLocations()
+
+    var projectsForLocation: LiveData<List<Project>>? = null
+
+    var selectedLocation: Location = Location.INTERIOR
+        set(value) {
+            field = value
+
+            projectsForLocation = projectsRepo.getProjectsForLocation(value)
+            projectsForLocation!!.observeForever {
+                // to ensure it emits
+            }
+        }
 
     fun deleteLocation(location: Location) = viewModelScope.launch(Dispatchers.IO) {
         locationsRepo.deleteLocation(location)
     }
+
+    fun deleteProject(project: Project) = viewModelScope.launch(Dispatchers.IO) {
+        projectsRepo.deleteProject(project)
+    }
+}
+
+enum class LocationScreen {
+    LOCATIONS,
+    PROJECTS_FOR_LOCATION
 }

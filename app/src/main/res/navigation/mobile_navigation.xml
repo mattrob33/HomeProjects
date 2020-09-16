@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_projects"
         android:name="com.homeprojects.presentation.projects.ProjectsFragment"
-        android:label="@string/menu_projects" >
+        android:label="@string/menu_projects">
         <action
             android:id="@+id/edit_project"
             app:destination="@id/nav_project" />
@@ -17,7 +17,11 @@
     <fragment
         android:id="@+id/nav_locations"
         android:name="com.homeprojects.presentation.locations.LocationsFragment"
-        android:label="@string/menu_locations" />
+        android:label="@string/menu_locations" >
+        <action
+            android:id="@+id/edit_project"
+            app:destination="@id/nav_project" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_tags"

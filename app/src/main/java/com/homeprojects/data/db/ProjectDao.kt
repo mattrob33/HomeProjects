@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.homeprojects.data.db.ProjectsDatabase.Companion.PROJECTS_TABLE
 import com.homeprojects.data.models.ProjectEntity
+import com.homeprojects.model.Location
 
 @Dao
 interface ProjectDao {
