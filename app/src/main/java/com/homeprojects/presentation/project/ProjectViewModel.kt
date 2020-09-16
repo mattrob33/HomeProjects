@@ -2,7 +2,6 @@ package com.homeprojects.presentation.project
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.homeprojects.data.repo.LocationRepo
@@ -26,20 +25,9 @@ class ProjectViewModel @ViewModelInject constructor(
             project!!.observeForever {
                 // calls to project.value will be null if we don't observe the LiveData
             }
-
-            viewModelScope.launch(Dispatchers.IO) {
-                val projSnapshot = projectsRepo.getProject(newId)
-
-                viewModelScope.launch(Dispatchers.Main) {
-                    _projectInitialSnapshot.value = projSnapshot
-                }
-            }
         }
 
-    private val _projectInitialSnapshot = MutableLiveData<Project>()
-    val projectInitialSnapshot: LiveData<Project> = _projectInitialSnapshot
-
-    var project: LiveData<Project>? = null
+    var project: LiveData<Project?>? = null
 
     val locations: LiveData<List<Location>> = locationsRepo.getLocations()
 

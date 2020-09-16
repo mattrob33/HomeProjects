@@ -20,7 +20,7 @@ interface ProjectDao {
     suspend fun getProject(id: String): ProjectEntity?
 
     @Query("SELECT * FROM $PROJECTS_TABLE WHERE `id` = :id LIMIT 1")
-    fun getProjectLiveData(id: String): LiveData<ProjectEntity>
+    fun getProjectLiveData(id: String): LiveData<ProjectEntity?>
 
     @Query("SELECT * FROM $PROJECTS_TABLE")
     suspend fun getAllProjects(): List<ProjectEntity>

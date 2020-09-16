@@ -48,7 +48,7 @@ class ProjectFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                viewModel.projectInitialSnapshot.observeAsState().value.let { project ->
+                viewModel.project?.observeAsState()?.value.let { project ->
                     if (project == null)
                         ProjectScreen( Project() )
                     else

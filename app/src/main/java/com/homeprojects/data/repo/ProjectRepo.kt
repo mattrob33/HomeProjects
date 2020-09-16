@@ -44,9 +44,12 @@ class ProjectRepo @Inject constructor(val projectDao: ProjectDao) {
         }
     }
 
-    fun getProjectLiveData(id: String): LiveData<Project> {
+    fun getProjectLiveData(id: String): LiveData<Project?> {
         return Transformations.map(projectDao.getProjectLiveData(id)) { entity ->
-            ProjectMapper.fromEntity(entity)
+            if (entity == null)
+                null
+            else
+                ProjectMapper.fromEntity(entity)
         }
     }
 
